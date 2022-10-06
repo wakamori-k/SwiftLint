@@ -14,9 +14,21 @@ struct SwiftLintPlugin: BuildToolPlugin {
                 arguments: [
                     "lint",
                     "--cache-path", "\(context.pluginWorkDirectory)"
-                ]
+                ],
+                environment: environment
             )
         ]
+    }
+}
+
+private extension SwiftLintPlugin {
+    var environment: [String: CustomStringConvertible] {
+        var environment: [String: CustomStringConvertible] = [:]
+        let keys = ["DEVELOPER_DIR"]
+        for key in keys {
+            environment[key] = ProcessInfo.processInfo.environment[key]
+        }
+        return environment
     }
 }
 
@@ -35,7 +47,8 @@ extension SwiftLintPlugin: XcodeBuildToolPlugin {
                 arguments: [
                     "lint",
                     "--cache-path", "\(context.pluginWorkDirectory)"
-                ]
+                ],
+                environment: environment
             )
         ]
     }
