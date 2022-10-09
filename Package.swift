@@ -23,7 +23,8 @@ let package = Package(
     products: [
         .executable(name: "swiftlint", targets: ["swiftlint"]),
         .library(name: "SwiftLintFramework", targets: ["SwiftLintFramework"]),
-        .plugin(name: "SwiftLintPlugin", targets: ["SwiftLintPlugin"])
+        .plugin(name: "SwiftLintPlugin", targets: ["SwiftLintPlugin"]),
+        .plugin(name: "SwiftLintAutoCorrectPlugin", targets: ["SwiftLintAutoCorrectPlugin"])
     ],
     dependencies: [
         .package(name: "swift-argument-parser", url: "https://github.com/apple/swift-argument-parser.git", .upToNextMinor(from: "1.1.3")),
@@ -36,6 +37,13 @@ let package = Package(
     targets: [
         .plugin(
             name: "SwiftLintPlugin",
+            capability: .buildTool(),
+            dependencies: [
+                .target(name: "swiftlint")
+            ]
+        ),
+        .plugin(
+            name: "SwiftLintAutoCorrectPlugin",
             capability: .buildTool(),
             dependencies: [
                 .target(name: "swiftlint")
